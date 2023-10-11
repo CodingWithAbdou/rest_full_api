@@ -10,12 +10,18 @@ class lesson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'titel' ,
+        'user_id',
+        'title' ,
         'body'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsTo(Tag::class);
     }
 }
