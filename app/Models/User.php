@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(lesson::class);
     }
+
+    public function  tags()
+    {
+        return $this->hasMany(lesson::class);
+    }
 }
