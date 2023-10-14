@@ -5,7 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Users as UsersResource;
 class UserController extends Controller
 {
     /**
@@ -13,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $user =  UserResource::collection(User::all());
+        return $user->response()->setStatusCode(200 , "Users Return SuccessFully");
+
     }
 
     /**
@@ -21,7 +24,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::create($request->all());
+        $user = new UserResource(User::create($request->all()));
+        return $user->response()->setStatusCode(200 , "Create  User  Success");
     }
 
     /**
@@ -29,7 +33,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return User::find($id);
+        $user = new UserResource(User::find($id));
+        return $user->response()->setStatusCode(200 , "User Return SuccessFully")
+        ->header('additional HEader' , 'true');
     }
 
     /**
@@ -37,10 +43,9 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
+        $user = new UserResource(User::find($id)->update($request->all()));
+        return $user->response()->setStatusCode(200 , "Update Number  " . $id . "User SuccessFully");
 
-        return $user;
     }
 
     /**
@@ -50,5 +55,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
+        $user = new UserResource(User::find($id)->delete());
+        return $user->response()->setStatusCode(200 , "Update Number  " . $id . "User SuccessFully");
+
     }
 }

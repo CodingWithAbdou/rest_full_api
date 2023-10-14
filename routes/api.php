@@ -50,17 +50,17 @@ Route::group(['prefix' => 'v1/'] , function () {
     // Route::redirect('tag' , 'tags');
 });
 
-Route::domain('{account}.myapp.com')->group(function(){
-    Route::get('user/{id}' , function($id) {
-        //
-    });
-});
+// Route::domain('{account}.myapp.com')->group(function(){
+//     Route::get('user/{id}' , function($id) {
+//         //
+//     });
+// });
 
-Route::get('lessons/{lesson:slug}' , function ($lesson) {
-    return $lesson;
-});
+// Route::get('lessons/{lesson:slug}' , function ($lesson) {
+//     return $lesson;
+// });
 
 
-Route::fallback(function() {
-    //
-});
+// Route::fallback(function() {
+//     //
+// });

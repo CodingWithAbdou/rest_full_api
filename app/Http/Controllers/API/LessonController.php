@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\lesson;
 use Illuminate\Http\Request;
-
+use App\Http\Resources\Lesson as LessonResource;
 class LessonController extends Controller
 {
     /**
@@ -13,7 +13,8 @@ class LessonController extends Controller
      */
     public function index()
     {
-        return lesson::all();
+        $lesson =  LessonResource::collection( lesson::all());
+        return $lesson->response()->setStatusCode(200 , "Lessons Return SuccessFully");
     }
 
     /**
@@ -21,7 +22,8 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        return lesson::create($request->all());
+        $lesson = new LessonResource(lesson::create($request->all()));
+        return $lesson->response()->setStatusCode(200 , "create Lesson Success");
     }
 
     /**
@@ -30,6 +32,9 @@ class LessonController extends Controller
     public function show(string $id)
     {
         return lesson::find($id);
+        $lesson =  new LessonResource(lesson::find($id));
+        return $lesson->response()->setStatusCode(200 , "Lesson Return SuccessFully");
+
     }
 
     /**
@@ -37,10 +42,8 @@ class LessonController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $lesson = lesson::findOrFail($id);
-        $lesson->update($request->all());
-
-        return $lesson;
+        $lesson =  new LessonResource( lesson::findOrFail($id)->update($request->all()));
+        return $lesson->response()->setStatusCode(200 , "Update Lesson  SuccessFully");
     }
 
     /**
@@ -48,10 +51,8 @@ class LessonController extends Controller
      */
     public function destroy(string $id)
     {
-        $lesson = lesson::find($id);
-        $lesson->delete();
-
-        return 'success Delete';
+        $lesson = new LessonResource(lesson::find($id)->delete());
+        return $lesson->response()->setStatusCode(200 , "Lesson Delete SuccessFully");
     }
 }
 

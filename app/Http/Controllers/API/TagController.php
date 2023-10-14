@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\tag;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\Tag as TagResource;
+
 class TagController extends Controller
 {
 
@@ -14,15 +16,18 @@ class TagController extends Controller
      */
     public function index()
     {
-        return tag::all();
+        $tag =  TagResource::collection(tag::all());
+        return $tag->response()->setStatusCode(200 , "Tags Return SuccessFully");
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        return tag::create($request->all());
+        $tag =  new TagResource(tag::create($request->all()));
+        return $tag->response()->setStatusCode(200 , "Tag Create SuccessFully");
+
+        return ;
     }
 
     /**
@@ -30,7 +35,8 @@ class TagController extends Controller
      */
     public function show(string $id)
     {
-        return tag::find($id);
+        $tag =  new TagResource(tag::find($id));
+        return $tag->response()->setStatusCode(200 , "Tag Return SuccessFully");
     }
 
     /**
@@ -38,10 +44,8 @@ class TagController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $tag = tag::findOrFail($id);
-        $tag->update($request->all());
-
-        return $tag;
+        $tag =  new TagResource(tag::find($id)->update($request->all()));
+        return $tag->response()->setStatusCode(200 , "Tags Update Success");
     }
 
     /**
@@ -49,8 +53,7 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
-        $tag = tag::find($id);
-        $tag->delete();
-
+        $tag =  new TagResource(tag::find($id)->delete());
+        return $tag->response()->setStatusCode(200 , "tag Delete SuccessFully");
     }
 }
