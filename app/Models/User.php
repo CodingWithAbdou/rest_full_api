@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function  tags()
     {
-        return $this->hasMany(lesson::class);
+        return $this->hasMany(tag::class);
     }
 }

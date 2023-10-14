@@ -13,7 +13,7 @@ class LessonController extends Controller
      */
     public function index()
     {
-        $lesson =  LessonResource::collection( lesson::all());
+        $lesson = LessonResource::collection(lesson::all());
         return $lesson->response()->setStatusCode(200 , "Lessons Return SuccessFully");
     }
 

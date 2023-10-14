@@ -14,25 +14,83 @@ use Illuminate\Support\Facades\Response;
 class RelationController extends Controller
 {
     public function user_lessons($id) {
-            $user = User::findOrFail($id);
-            return  new JsonResponse([
-                'data' => $user->lessons->toArray()
-            ], 200);
-    }
+
+
+            $user = User::findOrFail($id)->lessons;
+
+            $fields = [];
+            $filterd = [] ;
+            foreach ($user as $lesson) {
+                $fields['Title'] = $lesson->title;
+                $fields['Content'] = $lesson->body;
+
+                $filterd[] = $fields;
+            }
+
+            return response()->json(
+                [
+                    'data' => $filterd
+                ]
+                , 200);
+
+
+        }
 
     public function user_tags($id) {
-        $user = User::findOrFail($id);
-        return $user->tags;
+
+        $user = User::findOrFail($id)->tags;
+
+        $fields = [];
+        $filterd = [] ;
+        foreach ($user as $tag) {
+            $fields['Name'] = $tag->name;
+
+            $filterd[] = $fields;
+        }
+
+        return response()->json(
+            [
+                'data' => $filterd
+            ]
+            , 200);
+
     }
 
     public function lesson_tags($id) {
-        $lesson = lesson::findOrFail($id);
-        return $lesson->tags;
+        $lesson = lesson::findOrFail($id)->tags;
+
+        $fields = [];
+        $filterd = [] ;
+        foreach ($lesson as $tag) {
+            $fields['Name'] = $tag->name;
+
+            $filterd[] = $fields;
+        }
+
+        return response()->json(
+            [
+                'data' => $filterd
+            ]
+            , 200);
     }
 
     public function tag_lessons($id) {
-        $tag = tag::findOrFail($id);
-        return $tag->lessons;
+        $tag = tag::findOrFail($id)->lessons;
+
+        $fields = [];
+        $filterd = [] ;
+        foreach ($tag as $lesson) {
+            $fields['Title'] = $lesson->title;
+            $fields['Content'] = $lesson->body;
+
+            $filterd[] = $fields;
+        }
+
+        return response()->json(
+            [
+                'data' => $filterd
+            ]
+            , 200);
     }
 
 }
