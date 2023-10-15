@@ -7,11 +7,18 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\Users as UsersResource;
+use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('auth.basic.once')->except(['index'  , 'show']);
+    }
+
     public function index()
     {
         $user =  UserResource::collection(User::all());
@@ -24,7 +31,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new UserResource(User::create($request->all()));
+        $user = new UserResource(User::create([
+            'name' => $request->name ,
+            'email' => $request->email ,
+            'password' => Hash::make($request->password) ,
+        ]));
         return $user->response()->setStatusCode(200 , "Create  User  Success");
     }
 
