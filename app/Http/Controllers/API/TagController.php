@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\tag;
 use Illuminate\Http\Request;
-
 use App\Http\Resources\Tag as TagResource;
+use Illuminate\Support\Facades\Response ;
 
 class TagController extends Controller
 {
@@ -17,7 +17,11 @@ class TagController extends Controller
     public function index()
     {
         $tag =  TagResource::collection(tag::all());
-        return $tag->response()->setStatusCode(200 , "Tags Return SuccessFully");
+        return  Response([
+            'data' => [
+                'message' => 'Tags Return SuccessFully'
+            ]
+        ] , 200);
     }
     /**
      * Store a newly created resource in storage.
@@ -25,9 +29,11 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $tag =  new TagResource(tag::create($request->all()));
-        return $tag->response()->setStatusCode(200 , "Tag Create SuccessFully");
-
-        return ;
+        return  Response([
+            'data' => [
+                'message' => 'Tag Create SuccessFully'
+            ]
+        ] , 200);
     }
 
     /**
@@ -36,7 +42,11 @@ class TagController extends Controller
     public function show(string $id)
     {
         $tag =  new TagResource(tag::find($id));
-        return $tag->response()->setStatusCode(200 , "Tag Return SuccessFully");
+        return  Response([
+            'data' => [
+                'message' => 'Tag Return SuccessFully'
+            ]
+        ] , 200);
     }
 
     /**
@@ -45,7 +55,11 @@ class TagController extends Controller
     public function update(Request $request, string $id)
     {
         $tag =  new TagResource(tag::find($id)->update($request->all()));
-        return $tag->response()->setStatusCode(200 , "Tags Update Success");
+        return  Response([
+            'data' => [
+                'message' => 'Tags Update Success'
+            ]
+        ] , 200);
     }
 
     /**
@@ -54,6 +68,10 @@ class TagController extends Controller
     public function destroy(string $id)
     {
         $tag =  new TagResource(tag::find($id)->delete());
-        return $tag->response()->setStatusCode(200 , "tag Delete SuccessFully");
+        return  Response([
+            'data' => [
+                'message' => 'tag Delete SuccessFully'
+            ]
+        ] , 200);
     }
 }

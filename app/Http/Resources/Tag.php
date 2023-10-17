@@ -17,7 +17,7 @@ class Tag extends JsonResource
     {
         return [
             'Name' => $this->name,
-            "Lessons" => LessonResource::collection($this->lessons)
+            // "Lessons" => LessonResource::collection($this->lessons)
         ];
     }
 }

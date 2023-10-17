@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\LessonController;
+use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\API\TagController;
 use App\Http\Controllers\API\RelationController;
 
@@ -35,10 +36,15 @@ Route::group(['prefix' => 'v1/' ] , function () {
     // fetch tags
     Route::apiResource('tags' , TagController::class);
     /// relation bettwin table
-    Route::get('user/{id}/lessons' ,[ RelationController::class , 'user_lessons']);
+    Route::get(' user/{id}/lessons' ,[ RelationController::class , 'user_lessons']);
     Route::get('user/{id}/tags' ,[ RelationController::class , 'user_tags']);
     Route::get('lesson/{id}/tags' ,[ RelationController::class , 'lesson_tags']);
     Route::get('tag/{id}/lessons' ,[ RelationController::class , 'tag_lessons']);
+
+    // login
+
+    Route::get('/login' , [LoginController::class  , 'login'])->name('login');
+
 
     // Check When Write Wrong
     Route::any('lesson' , function () {

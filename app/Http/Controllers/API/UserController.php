@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
-use App\Http\Resources\Users as UsersResource;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth.basic.once')->except(['index'  , 'show']);
+        // $this->middleware('auth:api')->except(['index'  , 'show']);
     }
 
     public function index()
@@ -36,7 +36,12 @@ class UserController extends Controller
             'email' => $request->email ,
             'password' => Hash::make($request->password) ,
         ]));
-        return $user->response()->setStatusCode(200 , "Create  User  Success");
+        return  Response([
+            'data' => [
+                'message' => 'Create  User  Success'
+            ]
+        ] , 200 , ['new Header' => 'true']);
+
     }
 
     /**
@@ -45,8 +50,11 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = new UserResource(User::find($id));
-        return $user->response()->setStatusCode(200 , "User Return SuccessFully")
-        ->header('additional HEader' , 'true');
+        return  Response([
+            'data' => [
+                'message' => 'Update user '. $id .' success'
+            ]
+        ] , 200 , ['new Header' => 'true']);
     }
 
     /**
@@ -55,8 +63,11 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = new UserResource(User::find($id)->update($request->all()));
-        return $user->response()->setStatusCode(200 , "Update Number  " . $id . "User SuccessFully");
-
+        return  Response([
+            'data' => [
+                'message' => 'Update user '. $id .' success'
+            ]
+        ] , 200);
     }
 
     /**
@@ -64,10 +75,11 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find($id);
-        $user->delete();
         $user = new UserResource(User::find($id)->delete());
-        return $user->response()->setStatusCode(200 , "Update Number  " . $id . "User SuccessFully");
-
+        return  Response([
+            'data' => [
+                'message' => 'remove success'
+            ]
+        ] , 200);
     }
 }

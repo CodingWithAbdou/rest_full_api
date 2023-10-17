@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\lesson;
 use Illuminate\Http\Request;
 use App\Http\Resources\Lesson as LessonResource;
+use Illuminate\Support\Facades\Response;
+
 class LessonController extends Controller
 {
     /**
@@ -14,7 +16,11 @@ class LessonController extends Controller
     public function index()
     {
         $lesson = LessonResource::collection(lesson::all());
-        return $lesson->response()->setStatusCode(200 , "Lessons Return SuccessFully");
+        return  Response([
+            'data' => [
+                'message' => 'Lessons Return SuccessFully'
+            ]
+        ] , 200);
     }
 
     /**
@@ -23,7 +29,11 @@ class LessonController extends Controller
     public function store(Request $request)
     {
         $lesson = new LessonResource(lesson::create($request->all()));
-        return $lesson->response()->setStatusCode(200 , "create Lesson Success");
+        return  Response([
+            'data' => [
+                'message' => 'create Lesson Success'
+            ]
+        ] , 200);
     }
 
     /**
@@ -33,7 +43,11 @@ class LessonController extends Controller
     {
         return lesson::find($id);
         $lesson =  new LessonResource(lesson::find($id));
-        return $lesson->response()->setStatusCode(200 , "Lesson Return SuccessFully");
+        return  Response([
+            'data' => [
+                'message' => 'Lesson Return SuccessFully'
+            ]
+        ] , 200);
 
     }
 
@@ -43,7 +57,11 @@ class LessonController extends Controller
     public function update(Request $request, string $id)
     {
         $lesson =  new LessonResource( lesson::findOrFail($id)->update($request->all()));
-        return $lesson->response()->setStatusCode(200 , "Update Lesson  SuccessFully");
+        return  Response([
+            'data' => [
+                'message' => 'Update Lesson  SuccessFully'
+            ]
+        ] , 200);
     }
 
     /**
@@ -52,7 +70,11 @@ class LessonController extends Controller
     public function destroy(string $id)
     {
         $lesson = new LessonResource(lesson::find($id)->delete());
-        return $lesson->response()->setStatusCode(200 , "Lesson Delete SuccessFully");
+        return  Response([
+            'data' => [
+                'message' => 'Lesson Delete SuccessFully'
+            ]
+        ] , 200);
     }
 }
 
