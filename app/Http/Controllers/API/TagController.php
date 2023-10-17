@@ -14,9 +14,10 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tag =  TagResource::collection(tag::all());
+        $limit = $request->input('limit') <=50 ? $request->input('limit') : 15;
+        $tag =  TagResource::collection(tag::paginate($limit ?? 10));
         return  Response([
             'data' => [
                 'message' => 'Tags Return SuccessFully'
@@ -54,6 +55,8 @@ class TagController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $tag_id = tag::findOrFail($id);;
+        $this->authorize('update' , $tag_id);
         $tag =  new TagResource(tag::find($id)->update($request->all()));
         return  Response([
             'data' => [
@@ -67,6 +70,8 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
+        $tag_id = tag::findOrFail($id);;
+        $this->authorize('delete' , $tag_id);
         $tag =  new TagResource(tag::find($id)->delete());
         return  Response([
             'data' => [

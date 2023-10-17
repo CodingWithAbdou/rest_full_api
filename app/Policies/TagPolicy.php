@@ -11,7 +11,7 @@ class TagPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
         //
     }
@@ -19,7 +19,7 @@ class TagPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, tag $tag): bool
+    public function view(User $user, tag $tag)
     {
         //
     }
@@ -27,7 +27,7 @@ class TagPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user)
     {
         //
     }
@@ -35,23 +35,27 @@ class TagPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, tag $tag): bool
+    public function update(User $user, tag $tag)
     {
-        //
+        return $user->role == 'admin' || $user->id == $tag->user_id  ?
+        Response::allow() :
+        Response::deny("You Don't Have Permission For Delete This Acount");
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, tag $tag): bool
+    public function delete(User $user, tag $tag)
     {
-        //
+        return $user->role == 'admin' || $user->id == $tag->user_id  ?
+        Response::allow() :
+        Response::deny("You Don't Have Permission For Delete This Acount");
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, tag $tag): bool
+    public function restore(User $user, tag $tag)
     {
         //
     }
@@ -59,7 +63,7 @@ class TagPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, tag $tag): bool
+    public function forceDelete(User $user, tag $tag)
     {
         //
     }

@@ -13,9 +13,10 @@ class LessonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $lesson = LessonResource::collection(lesson::all());
+        $limit = $request->input('limit') <=50 ? $request->input('limit') : 15;
+        $lesson = LessonResource::collection(lesson::paginate($limit ?? 10));
         return  Response([
             'data' => [
                 'message' => 'Lessons Return SuccessFully'
@@ -57,7 +58,7 @@ class LessonController extends Controller
     public function update(Request $request, string $id)
     {
         $lesson_id = lesson::findOrFail($id) ;
-        $this->authorize('delete' ,  $lesson_id);
+        $this->authorize('update' ,  $lesson_id);
         $lesson =  new LessonResource( lesson::findOrFail($id)->update($request->all()));
         return  Response([
             'data' => [

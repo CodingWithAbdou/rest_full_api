@@ -51,6 +51,7 @@ class LessonPolicy
         return $user->role == 'admin' || $user->id == $lesson->user_id  ?
         Response::allow() :
         Response::deny("You Don't Have Permission For Delete This Acount");
+
     }
 
     /**
