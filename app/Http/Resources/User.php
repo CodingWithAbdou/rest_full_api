@@ -22,7 +22,7 @@ class User extends JsonResource
             // 'email' => $this->id,
             'Full-name' => $this->name,
             'Email' => $this->email,
-            // "Lessons" => LessonResource::collection($this->lessons)
+            "Lessons" => LessonResource::collection($this->lessons)
         ];
     }
 }

@@ -56,6 +56,8 @@ class LessonController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $lesson_id = lesson::findOrFail($id) ;
+        $this->authorize('delete' ,  $lesson_id);
         $lesson =  new LessonResource( lesson::findOrFail($id)->update($request->all()));
         return  Response([
             'data' => [
@@ -69,6 +71,8 @@ class LessonController extends Controller
      */
     public function destroy(string $id)
     {
+        $lesson_id = lesson::findOrFail($id) ;
+        $this->authorize('delete' ,  $lesson_id);
         $lesson = new LessonResource(lesson::find($id)->delete());
         return  Response([
             'data' => [

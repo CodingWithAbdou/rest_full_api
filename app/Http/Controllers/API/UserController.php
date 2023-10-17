@@ -16,14 +16,13 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth:api')->except(['index'  , 'show']);
+        $this->middleware('auth:api')->except(['index'  , 'show']);
     }
 
     public function index()
     {
         $user =  UserResource::collection(User::all());
         return $user->response()->setStatusCode(200 , "Users Return SuccessFully");
-
     }
 
     /**
@@ -31,6 +30,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create' , User::class);
         $user = new UserResource(User::create([
             'name' => $request->name ,
             'email' => $request->email ,
@@ -52,7 +52,7 @@ class UserController extends Controller
         $user = new UserResource(User::find($id));
         return  Response([
             'data' => [
-                'message' => 'Update user '. $id .' success'
+                $user
             ]
         ] , 200 , ['new Header' => 'true']);
     }
@@ -62,6 +62,8 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $user_id = User::findOrFail($id) ;
+        $this->authorize('update' ,  $user_id);
         $user = new UserResource(User::find($id)->update($request->all()));
         return  Response([
             'data' => [
@@ -75,6 +77,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        $user_id = User::findOrFail($id) ;
+        $this->authorize('delete' ,  $user_id);
         $user = new UserResource(User::find($id)->delete());
         return  Response([
             'data' => [
